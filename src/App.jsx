@@ -15,7 +15,7 @@ function usePoll(url, ms) {
 
   useEffect(() => {
     const fetch_ = () =>
-      fetch(url)
+      fetch(url, { headers: { 'ngrok-skip-browser-warning': '1' } })
         .then(r => r.json())
         .then(d => { setData(d); setError(null); setLastUpdate(new Date()) })
         .catch(e => setError(e.message))
