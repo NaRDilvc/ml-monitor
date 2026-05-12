@@ -5,7 +5,7 @@ import {
 } from 'recharts'
 import './App.css'
 
-const API = (import.meta.env.VITE_API_URL || '') + '/api/status'
+const API = '/api/status'
 const POLL_MS = 3000
 
 function usePoll(url, ms) {
