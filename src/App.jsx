@@ -3,6 +3,7 @@ import {
   LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid,
   Tooltip, Legend, ResponsiveContainer,
 } from 'recharts'
+import ParticleBackground from './ParticleBackground'
 import './App.css'
 
 const API     = '/api/status'
@@ -153,6 +154,14 @@ export default function App() {
   const gpu = data?.gpu
 
   return (
+    <>
+      {/* ── Background layers (fixed, behind everything) ── */}
+      <ParticleBackground />
+      <div className="bg-orb bg-orb-1" />
+      <div className="bg-orb bg-orb-2" />
+      <div className="bg-orb bg-orb-3" />
+      <div className="bg-orb bg-orb-4" />
+
     <div className="app">
 
       {/* ── Header ── */}
@@ -359,5 +368,6 @@ export default function App() {
       )}
 
     </div>
+    </>
   )
 }
