@@ -6,6 +6,7 @@ import {
 import './App.css'
 
 const API = '/api/status'
+const CMD = '/api/command'
 const POLL_MS = 3000
 
 function usePoll(url, ms) {
@@ -69,8 +70,23 @@ function GpuBar({ label, value, max, color }) {
 
 const CHART_COLORS = { loss: '#f43f5e', f1: '#22c55e', precision: '#00d4ff', recall: '#f59e0b', accuracy: '#a78bfa' }
 
+async function sendCommand(command) {
+  await fetch(CMD, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ command }),
+  })
+}
+
 export default function App() {
   const { data, error, lastUpdate } = usePoll(API, POLL_MS)
+  const [cmdPending, setCmdPending] = useState(null)
+
+  const handleCommand = async (cmd) => {
+    setCmdPending(cmd)
+    await sendCommand(cmd)
+    setTimeout(() => setCmdPending(null), 3000)
+  }
 
   const eta = (() => {
     if (!data || !data.start_time || !data.current_step || data.current_step === 0) return null
@@ -103,9 +119,25 @@ export default function App() {
         <div className="header-right">
           {data && <StatusBadge status={data.status} />}
           {lastUpdate && (
-            <span className="last-update">
-              Updated {lastUpdate.toLocaleTimeString()}
-            </span>
+            <span className="last-update">Updated {lastUpdate.toLocaleTimeString()}</span>
+          )}
+          {data?.status === 'running' && (
+            <button
+              className="cmd-btn stop-btn"
+              onClick={() => handleCommand('stop')}
+              disabled={!!cmdPending}
+            >
+              {cmdPending === 'stop' ? 'Stopping...' : '⏹ Stop'}
+            </button>
+          )}
+          {(data?.status === 'stopped' || data?.status === 'completed') && (
+            <button
+              className="cmd-btn restart-btn"
+              onClick={() => handleCommand('restart')}
+              disabled={!!cmdPending}
+            >
+              {cmdPending === 'restart' ? 'Restarting...' : '▶ Restart'}
+            </button>
           )}
         </div>
       </header>

@@ -175,6 +175,21 @@
 }
 .metrics-table tbody tr:hover { background: var(--surface); }
 
+/* Control Buttons */
+.cmd-btn {
+  padding: 7px 18px;
+  border-radius: 8px;
+  border: none;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: opacity 0.15s, transform 0.1s;
+}
+.cmd-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.cmd-btn:not(:disabled):hover { opacity: 0.85; transform: translateY(-1px); }
+.stop-btn    { background: #ef4444; color: #fff; }
+.restart-btn { background: #22c55e; color: #0a0a0f; }
+
 /* Recharts overrides */
 .recharts-tooltip-wrapper { outline: none; }
 .recharts-legend-item-text { color: #94a3b8 !important; font-size: 12px; }
